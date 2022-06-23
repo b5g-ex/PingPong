@@ -1,64 +1,63 @@
-# サーバプロセスのモジュール
+### サーバプロセスのモジュール ###
+
 defmodule PingPong do
+
+  ## サーバプロセスを開始する関数 ##
   def server_start do
     pid = spawn(__MODULE__, :loop, []) # PingPong.loop()プロセスを生成
-    :global.register_name(:server, pid) # このサーバープロセスのPIDを:serverという名前で登録する
+    :global.register_name(:server, pid) # このサーバープロセスのPIDを:serverという名前でグローバルに登録する
   end
 
+  ## PingPong通信のためのループ関数 ##
   def loop do
-    # クライアントプロセスからのメッセージを受信する
+    # クライアントプロセスのPID(sender)と送られてきたメッセージ(msg)を受信する
     receive do
       {sender, msg} ->
-        #IO.puts("#{__MODULE__}: received message: #{msg}")
-        # クライアントプロセスへメッセージを送信する
-        send sender, {:ok, "#{msg}"}
-        #IO.puts("#{__MODULE__}: sent message: #{msg}")
+        send sender, {:ok, "#{msg}"} # クライアントプロセスへmsgを送り返す
     end
-    loop
+    loop # 再帰
   end
 end
 
-# クライアントプロセスのモジュール
+
+
+### クライアントプロセスのモジュール ###
+
 defmodule Client do
-  def start(max_cnt, pack) do
-    cnt = 1 # 今何回やりとりしたかのカウント値
-    # サーバプロセスへメッセージを送信する
-    send :global.whereis_name(:server), {self, "#{pack}"}
-    #IO.puts("#{__MODULE__}: sent message: #{pack} ##{cnt}")
-    # サーバプロセスからメッセージを受信する
-    receive do
-      {:ok, msg} ->
-        #IO.puts("#{__MODULE__}: received message: #{msg} ##{cnt}")
-        client_loop(cnt + 1, max_cnt, msg)
-    end
+
+  ## クライアントプロセスを開始する関数 ##
+  # 入力...loop_num: PingPong送信回数，pkg: やりとりするパッケージ
+  def start(loop_num, pkg) do
+    send :global.whereis_name(:server), {self, "#{pkg}"} # サーバープロセスへpkgを送信する
+    loop(1, loop_num) # ループ開始
   end
 
-  # max_cnt 回 PingPong を繰り返す
-  def client_loop(cnt, max_cnt, msg) do
-    send :global.whereis_name(:server), {self, "#{msg}"}
-    #IO.puts("#{__MODULE__}: sent message: #{msg} ##{cnt}")
+  ## PingPong通信のためのループ関数 ##
+  # 入力...cnt: 何ループ目かを表すカウント値，loop_num: PingPong送信回数
+  def loop(cnt, loop_num) do
+    # サーバープロセスから送られてきたメッセージ(msg)を受信する
     receive do
-      {:ok, message} ->
-        #IO.puts("#{__MODULE__}: received message: #{message} ##{cnt}")
-        if cnt < max_cnt do
-          client_loop(cnt + 1, max_cnt, message)
+      {:ok, msg} ->
+        # loop_num回繰り返す
+        if cnt < loop_num do
+          send :global.whereis_name(:server), {self, "#{msg}"} # サーバープロセスへmsgを送り返す
+          loop(cnt + 1, loop_num) # 再帰
         end
     end
   end
 
-  # pack のやりとりを max_cnt 回行ったときにかかる時間の10回平均を計測する
-  def time_measurement(max_cnt, pack, time_cnt \\ 1, a \\ []) do
-    if time_cnt <= 10 do
-      {t, nil} = :timer.tc(Client, :start, [max_cnt, pack])
-      Enum.into([t], a)
-      IO.puts("time: #{t}")
-      time_measurement(max_cnt, pack, time_cnt + 1, [t | a])
-    end
-    if time_cnt == 10 do
-      ave = Statistics.mean(a) # 平均
-      std = Statistics.stdev(a) # 標準偏差
-      IO.puts("Average: #{ave}")
-      IO.puts("Std: #{std}")
+  ## PingPong通信にかかる時間を計測する関数 ##
+  # 入力...loop_num: PingPong送信回数，pkg: やりとりするパッケージ，cnt: 何回目の計算かを表すカウント値，a: 計算時間を格納するリスト
+  def time_mm(loop_num, pkg, cnt \\ 1, a \\ []) do
+    # 100回繰り返す
+    if cnt <= 100 do
+      {t, nil} = :timer.tc(__MODULE__, :start, [loop_num, pkg]) # 時間計測
+      time_mm(loop_num, pkg, cnt + 1, [t | a]) # 再帰
+    else
+      IO.puts("Average: ")
+      a |> Statistics.mean |> IO.inspect # 計測時間の平均
+      IO.puts("Standard Dev: ")
+      a |> Statistics.stdev |> IO.inspect # 計測時間の標準偏差
     end
   end
 end

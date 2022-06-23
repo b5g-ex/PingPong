@@ -64,7 +64,7 @@ config :vintage_net,
       type: VintageNetEthernet,
       ipv4: %{
        method: :static,
-       address: "192.168.11.4",
+       address: "192.168.11.4", # rp4twoでは192.168.11.6
        prefix_length: 24,
      }
     }},
@@ -92,7 +92,7 @@ config :mdns_lite,
   # because otherwise any of the devices may respond to nerves.local leading to
   # unpredictable behavior.
 
-  hosts: [:hostname, "nerves"],
+  hosts: [:hostname, "nerves"], # rp4twoではnerves2
   ttl: 120,
 
   # Advertise the following services over mDNS.
