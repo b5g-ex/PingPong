@@ -1,5 +1,7 @@
 # Ppnn
 
+Node.connect: Nerves x Nerves
+
 **TODO: Add description**
 
 ## Targets
