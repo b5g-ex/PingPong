@@ -64,7 +64,7 @@ config :vintage_net,
       type: VintageNetEthernet,
       ipv4: %{
        method: :static,
-       address: "192.168.11.4", # rp4twoでは192.168.11.6
+       address: System.get_env("RP4ONE_ETH"),
        prefix_length: 24,
      }
     }},
@@ -74,8 +74,8 @@ config :vintage_net,
        networks: [
          %{
            key_mgmt: :wpa_psk,
-           ssid: "Buffalo-1310",
-           psk: "v4sme86djke3w",
+           ssid: System.get_env("WIFI_SSID"),
+           psk: System.get_env("WIFI_PSK"),
          }
        ]
      },
