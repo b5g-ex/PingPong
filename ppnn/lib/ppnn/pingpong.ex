@@ -52,6 +52,7 @@ defmodule Client do
     # 100回繰り返す
     if cnt <= 100 do
       {t, nil} = :timer.tc(__MODULE__, :start, [loop_num, pkg]) # 時間計測
+      IO.puts(t)
       time_mm(loop_num, pkg, cnt + 1, [t | a]) # 再帰
     else
       IO.puts("Average: ")

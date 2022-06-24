@@ -24,7 +24,7 @@ config :nerves,
   ]
 
 config :nerves_firmware_ssh,
-  authories_keys: [
+  authorized_keys: [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAVUBTEWLmVRMkpUOlkawrAETRDv70Bp2ISMHeWDaAFv",
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMPKiNIc0/ZIV2XqIzoEWQtpPK1CYEL7JJe7RM/Hu+sg"
   ]
