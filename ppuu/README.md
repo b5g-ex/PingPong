@@ -1,5 +1,7 @@
 # Ppuu
 
+Node.connect: Ubuntu x Ubuntu
+
 **TODO: Add description**
 
 ## Installation
