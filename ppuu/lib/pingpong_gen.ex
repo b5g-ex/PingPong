@@ -37,7 +37,8 @@ defmodule PingpongGen do
   end
 
   defp do_loop(loop_num) do
-    {_msg, cnt} = GenServer.call(:global.whereis_name(:server), :pingpong)
+    {msg, cnt} = GenServer.call(:global.whereis_name(:server), :pingpong)
+    GenServer.cast(:global.whereis_name(:server), {:receive, {"#{msg}", cnt + 1}})
     if (cnt < loop_num) do
       do_loop(loop_num)
     end
