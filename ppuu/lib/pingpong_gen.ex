@@ -1,8 +1,8 @@
-defmodule PingpongGen do
+defmodule Server do
   use GenServer
 
-  def server_start(msg \\ "", cnt \\ 0) do
-    {:ok, pid} = GenServer.start(__MODULE__, {msg, cnt})
+  def start(msg \\ "", cnt \\ 0) do
+    {:ok, pid} = GenServer.start_link(__MODULE__, {msg, cnt})
     :global.register_name(:server, pid)
   end
 
@@ -17,12 +17,14 @@ defmodule PingpongGen do
   def handle_cast({:receive, {msg, cnt}}, {_pre_msg, _pre_cnt}) do
     {:noreply, {msg, cnt}}
   end
+end
 
-  def client_start(msg, loop_num, cnt \\ 1, a \\ []) do
+defmodule Client do
+  def start(msg, loop_num, cnt \\ 1, a \\ []) do
     if (cnt <= 100) do
       {t, nil} = :timer.tc(__MODULE__, :loop, [msg, loop_num])
       IO.puts(t)
-      client_start(msg, loop_num, cnt + 1, [t | a])
+      start(msg, loop_num, cnt + 1, [t | a])
     else
       IO.puts("Average: ")
       a |> Statistics.mean |> IO.inspect
