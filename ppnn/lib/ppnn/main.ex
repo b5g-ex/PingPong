@@ -1,6 +1,9 @@
 defmodule Main do
   def server_start do
     Server.start_link()
+    System.get_env("CONNECT_TARGET")
+    |> String.to_atom
+    |> Node.connect
   end
 
   def client_start do

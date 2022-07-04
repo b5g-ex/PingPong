@@ -35,7 +35,7 @@ defmodule Ppnn.Application do
       # Children for all targets except host
       # Starts a worker by calling: Ppnn.Worker.start_link(arg)
       # {Ppnn.Worker, arg},
-      {Bootexineris, ["rp4one", "comcomeverybody", "rp4two@192.168.11.7"]}
+      # {Bootexineris, ["rp4one", "comcomeverybody", "rp4two@192.168.11.7"]}
     ]
   end
 
