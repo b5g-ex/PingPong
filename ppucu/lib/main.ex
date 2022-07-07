@@ -17,11 +17,11 @@ defmodule Main do
     |> Node.connect
   end
 
-  def server_timer(msg, loop_num, time_cnt \\ 1) do
+  def client_timer(msg, loop_num, time_cnt \\ 1) do
     if (time_cnt <= 50) do
-      Server.pingpong(msg, loop_num)
+      Client1.pingpong(msg, loop_num)
       :timer.sleep(2000)
-      server_timer(msg, loop_num, time_cnt + 1)
+      client_timer(msg, loop_num, time_cnt + 1)
     end
   end
 end
