@@ -20,6 +20,7 @@ PC のターミナル上でコマンドを打ちます．
   * ファームウェアを作るために `mix firmware` を実行します．
   * `mix firmware.burn` により，ファームウェアを SD カードに焼きます．また，既に SD カードに焼いている場合は，`mix upload nerves.local` により，遠隔で SD カードの中身を書き換えられます．
   * `ssh nerves.local` により，ハードウェアターゲットに ssh 接続します．すると，Nerves が立ち上がります．
+  
 2つのハードウェアとクラウドの計3つのターミナルでのコマンドを紹介します．
   * ハードウェア1：
     * `Main.client1_start("node_name", "cookie", "connect_node")` により，`node_name` という名前のノードを開始し，cookie を `cookie` により設定し，クライアント1の GenServer を立ち上げると共に，`connect_node` に対して Node.connect します．
