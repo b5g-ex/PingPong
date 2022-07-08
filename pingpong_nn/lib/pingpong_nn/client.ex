@@ -22,6 +22,7 @@ defmodule Client do
   def handle_cast({:at_client, [msg, cnt, loop_num, start_time]}, _current_state) do
     # IO.puts("client: #{msg} #{cnt}")
     if (cnt < loop_num) do
+      # :timer.sleep(1000)
       GenServer.cast(:global.whereis_name(:server), {:at_server, [msg, cnt + 1, loop_num, start_time]})
     else
       end_time = Time.utc_now()

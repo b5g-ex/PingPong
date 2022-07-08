@@ -1,6 +1,4 @@
-# Ppnn
-
-Node.connect: Nerves x Nerves
+# PingpongNn
 
 **TODO: Add description**
 

@@ -64,7 +64,7 @@ config :vintage_net,
       type: VintageNetEthernet,
       ipv4: %{
        method: :static,
-       address: System.get_env("RP4ONE_ETH"),
+       address: System.get_env("RP4_ETH"),
        prefix_length: 24,
      }
     }},
@@ -92,7 +92,7 @@ config :mdns_lite,
   # because otherwise any of the devices may respond to nerves.local leading to
   # unpredictable behavior.
 
-  hosts: [:hostname, "nerves"], # rp4twoではnerves2
+  hosts: [:hostname, System.get_env("HOST_NAME")],
   ttl: 120,
 
   # Advertise the following services over mDNS.

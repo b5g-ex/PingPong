@@ -15,6 +15,7 @@ defmodule Server do
 
   def handle_cast({:at_server, [msg, cnt, loop_num, start_time]}, _current_state) do
     # IO.puts("server: #{msg} #{cnt}")
+    # :timer.sleep(1000)
     GenServer.cast(:global.whereis_name(:client), {:at_client, [msg, cnt, loop_num, start_time]})
     {:noreply, [msg, cnt, loop_num, start_time]}
   end

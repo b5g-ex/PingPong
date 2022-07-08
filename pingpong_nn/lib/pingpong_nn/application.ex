@@ -1,4 +1,4 @@
-defmodule Ppnn.Application do
+defmodule PingpongNn.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,13 +9,13 @@ defmodule Ppnn.Application do
   def start(_type, _args) do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Ppnn.Supervisor]
+    opts = [strategy: :one_for_one, name: PingpongNn.Supervisor]
 
     children =
       [
         # Children for all targets
-        # Starts a worker by calling: Ppnn.Worker.start_link(arg)
-        # {Ppnn.Worker, arg},
+        # Starts a worker by calling: PingpongNn.Worker.start_link(arg)
+        # {PingpongNn.Worker, arg},
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)
@@ -25,21 +25,20 @@ defmodule Ppnn.Application do
   def children(:host) do
     [
       # Children that only run on the host
-      # Starts a worker by calling: Ppnn.Worker.start_link(arg)
-      # {Ppnn.Worker, arg},
+      # Starts a worker by calling: PingpongNn.Worker.start_link(arg)
+      # {PingpongNn.Worker, arg},
     ]
   end
 
   def children(_target) do
     [
       # Children for all targets except host
-      # Starts a worker by calling: Ppnn.Worker.start_link(arg)
-      # {Ppnn.Worker, arg},
-      # {Bootexineris, ["rp4one", "comcomeverybody", "rp4two@192.168.11.7"]}
+      # Starts a worker by calling: PingpongNn.Worker.start_link(arg)
+      # {PingpongNn.Worker, arg},
     ]
   end
 
   def target() do
-    Application.get_env(:ppnn, :target)
+    Application.get_env(:pingpong_nn, :target)
   end
 end
