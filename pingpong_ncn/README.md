@@ -2,7 +2,8 @@
 
 ## Description
 
-Node1(Nerves) -> Cloud -> Node2(Nerves) -> Cloud -> Node1 -> ...の通信時間を計測できます．Node1，Node2 のいずれかが Ubuntu であっても構いません．
+Node1 -> Cloud -> Node2 -> Cloud -> Node1 -> ...の通信時間を計測できます．このプロジェクトは，Node1, 2に Nerves を適用する場合のものです．Cloud は常に Ubuntu 上で動かすため，Cloud の設定については，pingpong_unu の README を参照してください．
+Node1 と Node2 の OS が異なっていても問題ありません．
 
 ## Environmental Variables
 
@@ -17,14 +18,14 @@ Node1(Nerves) -> Cloud -> Node2(Nerves) -> Cloud -> Node1 -> ...の通信時間�
 PC のターミナル上でコマンドを打ちます．
   * 環境変数を `export` により設定します．
   * 依存関係をインストールするために `mix deps.get` を実行します．
-  * ファームウェアを作るために `mix firmware` を実行します．
-  * `mix firmware.burn` により，ファームウェアを SD カードに焼きます．また，既に SD カードに焼いている場合は，`mix upload nerves.local` により，遠隔で SD カードの中身を書き換えられます．
+  * ファームウェアを作成するために `mix firmware` を実行します．
+  * `mix firmware.burn` により，ファームウェアを SD カードに焼きます．また，既に SD カードに焼いてハードウェアに SD カードを差し込んでいる場合は，`mix upload HOST_NAME.local` により，遠隔で SD カードの中身を書き換えられます．
   * `ssh nerves.local` により，ハードウェアターゲットに ssh 接続します．すると，Nerves が立ち上がります．
   
 2つのハードウェアとクラウドの計3つのターミナルでのコマンドを紹介します．
   * ハードウェア1：
-    * `Main.client1_start("node_name", "cookie", "connect_node")` により，`node_name` という名前のノードを開始し，cookie を `cookie` により設定し，クライアント1の GenServer を立ち上げると共に，`connect_node` に対して Node.connect します．
-    * クラウドのノード開始，GenServer 開始後にこのコマンドを打ってください．
+    * `Main.client1_start("node_name", "cookie", "connect_node")` により，`node_name` という名前のノードを開始し，cookie を `cookie` により設定し，クライアント1の GenServer を立ち上げると共に，`connect_node` に対して `Node.connect` します．この `connect_node` は，クラウドのノード名です．
+    * クラウドの GenServer 開始後にこのコマンドを打ってください．
     * 3ノード全ての GenServer が立ち上がったら，`Main.client_timer("message", loop_number)` により，通信時間の計測を始めることができます．`message` はやりとりする文章，`loop_number` はやりとりする回数を指定します．
   * ハードウェア2：
     * ハードウェア1と同様です．
