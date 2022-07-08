@@ -1,6 +1,6 @@
-defmodule Ppncn do
+defmodule PingpongNcn do
   @moduledoc """
-  Documentation for Ppncn.
+  Documentation for PingpongNcn.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Ppncn do
 
   ## Examples
 
-      iex> Ppncn.hello
+      iex> PingpongNcn.hello
       :world
 
   """
