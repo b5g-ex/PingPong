@@ -32,6 +32,7 @@ PC のターミナル上でコマンドを打ちます．
   * クラウド：
     * `iex --name node_name --cookie cookie -S mix` により，`node_name` というノードを開始します．
     * `Main.server_start` により，クラウドの GenServer を開始します．
+    
 注意点：
   * 3ノードの cookie は全て同じにしてください．そうでないと，Node.connect に失敗します．
 
